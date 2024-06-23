@@ -27,23 +27,29 @@ def find_image_position(template_path, screenshot):
     
     return top_left, bottom_right
 
-def main():
-    template_path = input("Enter the path of the template image: ")
-    
+def click_image_position(template_path):
     # Take a screenshot
     screenshot = take_screenshot()
     
     # Find the position of the template image in the screenshot
     top_left, bottom_right = find_image_position(template_path, screenshot)
     
-    print(f"Top-left corner: {top_left}")
-    print(f"Bottom-right corner: {bottom_right}")
+    # Calculate the center of the found image
+    center_x = (top_left[0] + bottom_right[0]) // 2
+    center_y = (top_left[1] + bottom_right[1]) // 2
     
-    # Optionally, display the result
-    cv2.rectangle(screenshot, top_left, bottom_right, (0, 255, 0), 2)
-    cv2.imshow('Result', screenshot)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Move the mouse to the center of the found image and click
+    pyautogui.moveTo(center_x, center_y)
+    pyautogui.click()
+    
+    print(f"Clicked on position: ({center_x}, {center_y})")
+
+def main():
+    template_path = input("Enter the path of the template image: ")
+    
+    # Click on the position of the image
+    click_image_position(template_path)
 
 if __name__ == "__main__":
     main()
+    
